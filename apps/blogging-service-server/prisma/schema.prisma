@@ -1,0 +1,27 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Author {
+  blogPosts BlogPost[]
+  createdAt DateTime   @default(now())
+  email     String?
+  id        String     @id @default(cuid())
+  name      String?
+  updatedAt DateTime   @updatedAt
+}
+
+model BlogPost {
+  author    Author?  @relation(fields: [authorId], references: [id])
+  authorId  String?
+  content   String?
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  title     String?
+  updatedAt DateTime @updatedAt
+}
